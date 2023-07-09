@@ -8,7 +8,6 @@ const productModel = new ProductModel();
 export const createProduct = async (req: Request, res: Response): Promise<void> => {
   try {
     const { product_price, product_name } = req.body;
-
     // Validate required fields
     if (!product_price || !product_name) {
       res.status(400).json({ error: "Missing required fields: product_price, product_name" });
@@ -21,9 +20,10 @@ export const createProduct = async (req: Request, res: Response): Promise<void> 
     };
 
     const createdProduct = await productModel.create(newProduct);
+    console.log(createProduct)
     res.status(201).json(createdProduct);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({error:"error while creating product"});
   }
 };
 
@@ -40,7 +40,7 @@ export const getProductById = async (req: Request, res: Response): Promise<void>
 
     res.status(200).json(product);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({error:"error while getting product"});
   }
 };
 
@@ -50,7 +50,7 @@ export const getAllProducts = async (_req: Request, res: Response): Promise<void
     const products = await productModel.getAll();
     res.status(200).json(products);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({error:"error while getting products"});
   }
 };
 
@@ -78,9 +78,9 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
       return;
     }
 
-    res.status(200).json(updated);
+    res.status(200).json({updated:updated});
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({error:"error while updating product"});
   }
 };
 
@@ -95,8 +95,8 @@ export const deleteProduct = async (req: Request, res: Response): Promise<void> 
       return;
     }
 
-    res.status(200).json(deleted);
+    res.status(200).json({deleted:deleted});
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({error:"error while deleting product"});
   }
 };

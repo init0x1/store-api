@@ -2,6 +2,7 @@ import express, { Router } from 'express'
 import { welcomeMessage, notFound } from '../controllers/'
 import { join } from 'path'
 import { userRouter } from './api/userRouter'
+import productRouter from './api/productRouter'
 
 //Declareing Static Directory for Serving Static Files
 
@@ -21,6 +22,9 @@ router.get('/', welcomeMessage)
 
 //using userRouter
 router.use('/users', userRouter)
+
+//using productRouter
+router.use('/products', productRouter)
 
 // Response With Not Found for any invalid path
 

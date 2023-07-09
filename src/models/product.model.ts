@@ -8,7 +8,7 @@ class ProductModel{
         try {
             const connection = await Client.connect()
             const sql = `INSERT INTO products (product_price, product_name) VALUES ($1, $2) RETURNING *;`;
-            const sql_result = await connection.query(sql)
+            const sql_result = await connection.query(sql,[product.product_price,product.product_name])
             connection.release()
             return sql_result.rows[0]
         } catch (error) {
