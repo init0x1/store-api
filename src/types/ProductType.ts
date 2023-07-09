@@ -5,3 +5,5 @@ type Product = {
     created_at ?:string
     updated_at ?:string
 }
+
+export {Product}
