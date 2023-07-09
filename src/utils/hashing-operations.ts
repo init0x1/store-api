@@ -12,5 +12,14 @@ const isValidPassword = (password:string,hashedPassword:string):boolean =>{
     const password_plus_pepper = password.concat(pepper as string)
     return compareSync(password_plus_pepper, hashedPassword)
 }
-
-export {hashingPassword,isValidPassword}
+const hashingUserId = (user_id: string): string => {
+    const userid_plus_pepper = user_id.concat(pepper as string)
+    return hashSync(userid_plus_pepper, parseInt(saltRounds as string))
+  }
+  
+  const isValidUserId = (user_id: string, hashedUserId: string): boolean => {
+    const userid_plus_pepper = user_id.concat(pepper as string)
+    return compareSync(userid_plus_pepper, hashedUserId)
+  }
+  
+  export { hashingPassword, isValidPassword, hashingUserId, isValidUserId }

@@ -78,23 +78,24 @@ class UserModel {
 
 
   //user login 
-  async authenticate(email:string,password:string):Promise<string | false>{
+  async authenticate(email: string, password: string): Promise<string | false> {
     try {
-        const connection = await Client.connect()
-        const sql_query = 'SELECT password FROM users WHERE email=$1;'
-        const query_result = await connection.query(sql_query, [email])
-        if(isValidPassword(password,query_result.rows[0].password as string)){
-            const result = await connection.query(`SELECT user_id FROM users WHERE email=$1;`,[email])
-            connection.release()
-            return result.rows[0].user_id
-        }
-        return false
-    } catch (error) {
-        throw new Error(`Error While Logging user ${email} ${error}`)
+      const connection = await Client.connect()
+      const sql_query = 'SELECT password FROM users WHERE email=$1;'
+      const query_result = await connection.query(sql_query, [email])
 
+      if (isValidPassword(password, query_result.rows[0].password as string)) {
+        const result = await connection.query('SELECT user_id FROM users WHERE email=$1 ;', [
+            email
+        ])
+        connection.release()
+        return result.rows[0].user_id
+      }
+      return false
+    } catch (error) {
+      throw new Error(`error while user login `)
     }
   }
-
 }
 
 export {UserModel}
