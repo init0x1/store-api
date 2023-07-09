@@ -12,7 +12,8 @@
     "migrate:down": "db-migrate reset",
     "test": "npx rimraf build && npx tsc && jasmine",
     "format": "npx prettier --write 'src/**/*.{ts,js}' ",
-    "lint": "npx eslint . --ext .ts"
+    "lint": "npx eslint . --ext .ts",
+    "lint:fix":"npx eslint . --ext .ts --fix"
   },
   "keywords": [],
   "license": "ISC",
@@ -37,14 +38,14 @@
     "@types/morgan": "^1.9.4",
     "@types/pg": "^8.10.2",
     "@types/supertest": "^2.0.12",
-    "@typescript-eslint/eslint-plugin": "^5.61.0",
-    "@typescript-eslint/parser": "^5.61.0",
-    "eslint": "^8.44.0",
+    "@typescript-eslint/eslint-plugin": "^5.60.0",
+    "@typescript-eslint/parser": "^5.60.0",
+    "eslint": "^8.43.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "morgan": "^1.10.0",
     "nodemon": "^3.0.1",
-    "prettier": "^3.0.0",
+    "prettier": "^2.8.8",
     "rimraf": "^5.0.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
