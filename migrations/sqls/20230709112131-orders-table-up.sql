@@ -4,5 +4,7 @@ CREATE TABLE orders (
   order_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   user_id UUID DEFAULT uuid_generate_v4() NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(user_id),
-  order_status VARCHAR(32) NOT NULL
+  order_status VARCHAR(32) NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NULL
 );
