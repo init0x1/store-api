@@ -37,7 +37,6 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
 export const getAllUsers = async (req: Request, res: Response): Promise<void> => {
   try {
     const users: User[] = await userModel.findAll()
-    console.log(users)
     if (!users.length) {
       res.status(404).json({ message: 'No Users Found' })
       return

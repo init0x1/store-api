@@ -85,7 +85,7 @@ class UserModel {
 
       if (isValidPassword(password, query_result.rows[0].password as string)) {
         const result = await connection.query(
-          'SELECT user_id, email, first_name, last_name, created_at FROM users email=$1 ;',
+          'SELECT user_id, email, first_name, last_name, created_at FROM users WHERE email=$1 ;',
           [email]
         )
         connection.release()
