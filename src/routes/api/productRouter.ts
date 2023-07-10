@@ -1,29 +1,29 @@
-import express from "express";
+import express from 'express'
 import {
   createProduct,
   getProductById,
   getAllProducts,
   updateProduct,
-  deleteProduct,
-} from "../../handlers/product.handler";
+  deleteProduct
+} from '../../handlers/product.handler'
 
-import {validateTokenMiddleware} from"../../middlewares/authenrication.middleware"
+import { validateTokenMiddleware } from '../../middlewares/authenrication.middleware'
 
-const productRouter = express.Router();
+const productRouter = express.Router()
 
 // Create a new product
-productRouter.post("/",validateTokenMiddleware, createProduct);
+productRouter.post('/', validateTokenMiddleware, createProduct)
 
 // Get a product by ID
-productRouter.get("/:product_id", getProductById);
+productRouter.get('/:product_id', getProductById)
 
 // Get all products
-productRouter.get("/", getAllProducts);
+productRouter.get('/', getAllProducts)
 
 // Update a product by ID
-productRouter.put("/:product_id", updateProduct);
+productRouter.put('/:product_id', updateProduct)
 
 // Delete a product by ID
-productRouter.delete("/:product_id",validateTokenMiddleware, deleteProduct);
+productRouter.delete('/:product_id', validateTokenMiddleware, deleteProduct)
 
-export default productRouter;
+export default productRouter
