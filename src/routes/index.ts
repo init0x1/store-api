@@ -6,6 +6,7 @@ import productRouter from './api/productRouter'
 
 import { validateTokenMiddleware } from '../middlewares/authenrication.middleware'
 import { orderRouter } from './api/orderRouter'
+import { orderedProductRouter } from './api/orderdProductRouter'
 
 //Declareing Static Directory for Serving Static Files
 
@@ -31,6 +32,9 @@ router.use('/products', productRouter)
 
 //using orderRouter
 router.use('/orders', validateTokenMiddleware, orderRouter)
+
+//using orderedProductsRouter
+router.use('/orderedProducts', validateTokenMiddleware, orderedProductRouter)
 
 // Response With Not Found for any invalid path
 

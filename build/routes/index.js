@@ -10,6 +10,7 @@ const userRouter_1 = require("./api/userRouter");
 const productRouter_1 = __importDefault(require("./api/productRouter"));
 const authenrication_middleware_1 = require("../middlewares/authenrication.middleware");
 const orderRouter_1 = require("./api/orderRouter");
+const orderdProductRouter_1 = require("./api/orderdProductRouter");
 //Declareing Static Directory for Serving Static Files
 const staticDir = (0, path_1.join)(__dirname, '..', '..', 'public');
 //Creatring Router instance
@@ -24,6 +25,8 @@ router.use('/users', userRouter_1.userRouter);
 router.use('/products', productRouter_1.default);
 //using orderRouter
 router.use('/orders', authenrication_middleware_1.validateTokenMiddleware, orderRouter_1.orderRouter);
+//using orderedProductsRouter
+router.use('/orderedProducts', authenrication_middleware_1.validateTokenMiddleware, orderdProductRouter_1.orderedProductRouter);
 // Response With Not Found for any invalid path
 router.all('/*', controllers_1.notFound);
 exports.default = router;
