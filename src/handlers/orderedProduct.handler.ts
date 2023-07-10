@@ -71,9 +71,9 @@ export const deleteOrderedProduct = async (req: Request, res: Response): Promise
     const deleted = await orderedProductModel.delete(ordered_products_id)
 
     if (!deleted) {
-        res.status(404).json({ error: 'Ordered product not found' })
-        return
-    } 
+      res.status(404).json({ error: 'Ordered product not found' })
+      return
+    }
     res.status(200).json({ DeletedorderedProduct: deleted })
   } catch (error) {
     res.status(500).json({ error: 'Error while deleting ordered product' })
