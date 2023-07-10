@@ -31,6 +31,7 @@ export const getOrderedProductsByOrderId = async (req: Request, res: Response): 
     const orderedProducts = await orderedProductModel.getOrderedProductsByOrderId(order_id)
     if (!orderedProducts.length) {
       res.status(404).json({ message: 'there is no Products in this order!' })
+      return
     }
     res.status(200).json({ orderedProducts: orderedProducts })
   } catch (error) {
@@ -68,11 +69,12 @@ export const deleteOrderedProduct = async (req: Request, res: Response): Promise
     const ordered_products_id = req.params.ordered_products_id as string
 
     const deleted = await orderedProductModel.delete(ordered_products_id)
-    if (deleted) {
-      res.status(200).json({ DeletedorderedProduct: deleted })
-    } else {
-      res.status(404).json({ error: 'Ordered product not found' })
-    }
+
+    if (!deleted) {
+        res.status(404).json({ error: 'Ordered product not found' })
+        return
+    } 
+    res.status(200).json({ DeletedorderedProduct: deleted })
   } catch (error) {
     res.status(500).json({ error: 'Error while deleting ordered product' })
   }

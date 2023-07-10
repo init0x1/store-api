@@ -58,14 +58,14 @@ class OrderedProductModel {
     }
   }
 
-  async delete(orderedProduct_id: string): Promise<OrderedProduct> {
+  async delete(ordered_products_id: string): Promise<OrderedProduct> {
     try {
       const connection = await Client.connect()
       const sql = `
-        DELETE FROM ordered_products
-        WHERE ordered_products_id = $1;
+        DELETE  FROM ordered_products
+        WHERE ordered_products_id = $1 RETURNING *;
       `
-      const result = await connection.query(sql, [orderedProduct_id])
+      const result = await connection.query(sql, [ordered_products_id])
       connection.release()
       return result.rows[0]
     } catch (error) {

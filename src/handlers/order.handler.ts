@@ -1,10 +1,9 @@
 import { Request, Response } from 'express'
 import { OrderModel } from '../models/order.model'
-import { OrderedProductModel } from '../models/orderdProduct.model'
 import { Order } from '../types/OrderType'
 
 const orderModel = new OrderModel()
-const orderedProductModel = new OrderedProductModel()
+
 // Create a new order
 export const createOrder = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -35,15 +34,7 @@ export const getOrderById = async (req: Request, res: Response): Promise<void> =
       res.status(404).json({ error: 'Order not found' })
       return
     }
-
-    const orderedProducts = await orderedProductModel.getOrderedProductsByOrderId(order_id)
-
-    const orderWithProducts = {
-      ...order,
-      ordered_products: orderedProducts
-    }
-
-    res.status(200).json(orderWithProducts)
+    res.status(200).json(order)
   } catch (error) {
     res.status(500).json({ error: 'Error while retrieving order' })
   }
