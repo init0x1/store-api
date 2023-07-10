@@ -58,7 +58,8 @@ class OrderModel {
       const connection = await Client.connect()
       const sql = `
         UPDATE orders
-        SET  order_status = $1
+        SET  order_status = $1,
+        updated_at = now()
         WHERE order_id = $2
         RETURNING *;
       `

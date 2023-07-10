@@ -4,6 +4,9 @@ import { join } from 'path'
 import { userRouter } from './api/userRouter'
 import productRouter from './api/productRouter'
 
+import { validateTokenMiddleware } from '../middlewares/authenrication.middleware'
+import { orderRouter } from './api/orderRouter'
+
 //Declareing Static Directory for Serving Static Files
 
 const staticDir: string = join(__dirname, '..', '..', 'public')
@@ -25,6 +28,9 @@ router.use('/users', userRouter)
 
 //using productRouter
 router.use('/products', productRouter)
+
+//using orderRouter
+router.use('/orders', validateTokenMiddleware, orderRouter)
 
 // Response With Not Found for any invalid path
 
