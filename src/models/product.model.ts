@@ -46,7 +46,7 @@ class ProductModel {
   async update(product: Product): Promise<Product> {
     try {
       const connection = await Client.connect()
-      const sql = `UPDATE products SET product_price = $1, product_name = $2 WHERE product_id = $3 RETURNING *;`
+      const sql = `UPDATE products SET product_price = $1, product_name = $2 ,  updated_at = now() WHERE product_id = $3 RETURNING *;`
       const values = [product.product_price, product.product_name, product.product_id]
       const result = await connection.query(sql, values)
       connection.release()
