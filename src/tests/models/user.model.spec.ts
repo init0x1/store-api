@@ -3,60 +3,93 @@ import { User } from '../../types/UserType'
 
 const userModel = new UserModel()
 
-describe('User Model', () => {
-  let createdUser: User
+const testUser: User = {
+  email: 'test@0xabdo.com',
+  first_name: 'Abdelrahman',
+  last_name: 'Ali',
+  password: 'A123159A'
+}
 
-  beforeEach(async () => {
-    const user: User = {
-      email: 'test@example.com',
-      password: 'password123',
-      first_name: '0xAbdo',
-      last_name: 'Ali'
-    }
-    createdUser = await userModel.create(user)
+let user0: User
+let user1: User
+
+describe('User Model Test', () => {
+  beforeAll(async () => {
+    user0 = await userModel.create({
+      email: 'user0@0xabdo.com',
+      password: 'user0',
+      first_name: 'user',
+      last_name: 'zero'
+    })
   })
 
-  afterEach(async () => {
-    await userModel.delete(createdUser.user_id as string)
+  afterAll(async () => {
+    await userModel.delete(user1.user_id as string)
+  })
+
+  it('should have a findAll method', () => {
+    expect(userModel.findAll).toBeDefined()
+  })
+
+  it('should have a show method', () => {
+    expect(userModel.show).toBeDefined()
+  })
+
+  it('should have a create method', () => {
+    expect(userModel.create).toBeDefined()
+  })
+
+  it('should have an update method', () => {
+    expect(userModel.update).toBeDefined()
+  })
+
+  it('should have a delete method', () => {
+    expect(userModel.delete).toBeDefined()
+  })
+
+  it('should have an authenticate method', () => {
+    expect(userModel.authenticate).toBeDefined()
   })
 
   it('should create a new user', async () => {
-    const user: User = {
-      email: 'newuser@example.com',
-      password: 'newpassword123',
-      first_name: 'New',
-      last_name: '0xAbdo'
-    }
-    const created = await userModel.create(user)
+    user1 = await userModel.create(testUser)
 
-    expect(created.email).toBe(user.email)
-    expect(created.first_name).toBe(user.first_name)
-    expect(created.last_name).toBe(user.last_name)
+    expect(user1.email).toBe(testUser.email)
+    expect(user1.first_name).toBe(testUser.first_name)
+    expect(user1.last_name).toBe(testUser.last_name)
   })
+
   it('should retrieve all users', async () => {
     const users = await userModel.findAll()
+
     expect(users.length).toBeGreaterThan(0)
 
-    const foundUser = users.find((user) => user.user_id === createdUser.user_id)
-    expect(foundUser).toBeDefined()
-    expect(foundUser?.email).toBe(createdUser.email)
-    expect(foundUser?.first_name).toBe(createdUser.first_name)
-    expect(foundUser?.last_name).toBe(createdUser.last_name)
+    expect(users[0]?.email).toBe(user0.email)
+    expect(users[0]?.first_name).toBe(user0.first_name)
+    expect(users[0]?.last_name).toBe(user0.last_name)
+
+    expect(users[1]?.email).toBe(testUser.email)
+    expect(users[1]?.first_name).toBe(testUser.first_name)
+    expect(users[1]?.last_name).toBe(testUser.last_name)
   })
 
   it('should retrieve a user by ID', async () => {
-    const user = await userModel.show(createdUser.user_id!)
-    expect(user?.email).toEqual(createdUser.email)
-    expect(user?.first_name).toBe(createdUser.first_name)
-    expect(user?.last_name).toBe(createdUser.last_name)
+    const user = await userModel.show(user0.user_id as string)
+
+    expect(user?.email).toEqual(user0.email)
+    expect(user?.first_name).toBe(user0.first_name)
+    expect(user?.last_name).toBe(user0.last_name)
   })
 
   it('should update a user', async () => {
     const updatedUser: User = {
-      ...createdUser,
+      user_id: user0.user_id as string,
       email: 'updated@example.com',
-      first_name: 'Updated'
+      first_name: 'Updated',
+      last_name: 'Updated',
+      password: 'new pass'
     }
+
     const updated = await userModel.update(updatedUser)
 
     expect(updated.email).toBe(updatedUser.email)
@@ -65,24 +98,23 @@ describe('User Model', () => {
   })
 
   it('should delete a user', async () => {
-    await userModel.delete(createdUser.user_id!)
+    await userModel.delete(user0.user_id as string)
     const users = await userModel.findAll()
-
     expect(users.length).toBe(1)
   })
 
   it('should authenticate a user with correct credentials', async () => {
-    const email = createdUser.email
-    const password = 'password123'
+    const email = testUser.email
+    const password = testUser.password
     const authenticatedUser = await userModel.authenticate(email, password)
 
-    expect(authenticatedUser?.email).toEqual(createdUser.email)
-    expect(authenticatedUser?.first_name).toEqual(createdUser.first_name)
-    expect(authenticatedUser?.last_name).toEqual(createdUser.last_name)
+    expect(authenticatedUser?.email).toEqual(testUser.email)
+    expect(authenticatedUser?.first_name).toEqual(testUser.first_name)
+    expect(authenticatedUser?.last_name).toEqual(testUser.last_name)
   })
 
   it('should not authenticate a user with incorrect password', async () => {
-    const email = createdUser.email
+    const email = testUser.email
     const password = 'incorrectpassword'
     const authenticatedUser = await userModel.authenticate(email, password)
 
@@ -91,7 +123,7 @@ describe('User Model', () => {
 
   it('should not authenticate a user with incorrect email', async () => {
     const email = 'incorrect@example.com'
-    const password = 'password123'
+    const password = testUser.password
 
     try {
       const authenticatedUser = await userModel.authenticate(email, password)
