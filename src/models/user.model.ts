@@ -83,7 +83,7 @@ class UserModel {
       const sql_query = 'SELECT password FROM users WHERE email=$1;'
       const query_result = await connection.query(sql_query, [email])
 
-      if (isValidPassword(password, query_result.rows[0].password as string)) {
+      if (query_result.rows[0] && isValidPassword(password, query_result.rows[0].password as string)) {
         const result = await connection.query(
           'SELECT user_id, email, first_name, last_name, created_at FROM users WHERE email=$1 ;',
           [email]
@@ -91,7 +91,7 @@ class UserModel {
         connection.release()
         return result.rows[0]
       }
-      return null
+      throw new Error(`Invalid email or password`)
     } catch (error) {
       throw new Error(`error while user login `)
     }
