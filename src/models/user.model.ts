@@ -78,6 +78,11 @@ class UserModel {
 
   //user login
   async authenticate(email: string, password: string): Promise<User | null> {
+  }
+  
+  async checkPermissions(userId: string, dataId: string): Promise<boolean> {
+    return userId === dataId
+  }
     try {
       const connection = await Client.connect()
       const sql_query = 'SELECT password FROM users WHERE email=$1;'
