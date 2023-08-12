@@ -126,6 +126,6 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       res.status(401).json({ Login: 'Failed' })
     }
   } catch (error) {
-    res.status(400).json({ Login: 'Failed, Error: Invalid email or password' })
+    res.status(400).json({ Login: 'Login failed' })
   }
 }
