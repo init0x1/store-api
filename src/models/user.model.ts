@@ -91,7 +91,7 @@ class UserModel {
         connection.release()
         return result.rows[0]
       }
-      throw new Error(`Invalid email or password`)
+      throw new Error(`Login failed`)
     } catch (error) {
       throw new Error(`error while user login `)
     }
