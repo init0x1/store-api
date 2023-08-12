@@ -135,7 +135,7 @@ export const deleteUser = [authenticate, async (req: Request, res: Response): Pr
 }
 
 // login user
-export const loginUser = [authenticate, async (req: Request, res: Response): Promise<void> => {
+export const loginUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const user = await userModel.authenticate(req.body.email as string, req.body.password as string)
     if (user) {
