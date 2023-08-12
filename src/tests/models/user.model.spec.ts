@@ -129,7 +129,7 @@ describe('User Model Test', () => {
       const authenticatedUser = await userModel.authenticate(email, password)
       expect(authenticatedUser).toBeNull()
     } catch (error: any) {
-      expect(error.message.trim()).toBe('Invalid email or password')
+      expect(error.message.trim()).toBe('Login failed')
     }
   })
 })
