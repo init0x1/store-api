@@ -78,6 +78,16 @@ class UserModel {
 
   //user login
   async authenticate(email: string, password: string): Promise<User | null> {
+  }
+  
+  async checkPermissions(userId: string, dataId: string): Promise<boolean> {
+    // Check if the user has the necessary roles or permissions
+    const user = await this.show(userId)
+    if (user.role !== 'admin' && userId !== dataId) {
+      return false
+    }
+    return true
+  }
     try {
       const connection = await Client.connect()
       const sql_query = 'SELECT password FROM users WHERE email=$1;'

@@ -1,12 +1,31 @@
-import { Request, Response } from 'express'
+import { Request, Response, NextFunction } from 'express'
 import { UserModel } from '../models/user.model'
 import { User } from '../types/UserType'
-import { generateToken } from '../utils/token-operations'
+import { generateToken, verifyToken } from '../utils/token-operations'
 
 const userModel = new UserModel()
 
+const authenticate = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = req.headers.authorization
+    if (!token) {
+      res.status(401).json({ error: 'No token provided' })
+      return
+    }
+    const user = verifyToken(token)
+    if (!user) {
+      res.status(401).json({ error: 'Invalid token' })
+      return
+    }
+    req.user = user
+    next()
+  } catch (error) {
+    res.status(500).json({ error: 'Error while authenticating user' })
+  }
+}
+
 //create User
-export const createUser = async (req: Request, res: Response): Promise<void> => {
+export const createUser = [authenticate, async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password, first_name, last_name } = req.body
     if (!email || !password || !first_name || !last_name) {
@@ -34,7 +53,7 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
 }
 
 //get all users
-export const getAllUsers = async (req: Request, res: Response): Promise<void> => {
+export const getAllUsers = [authenticate, async (req: Request, res: Response): Promise<void> => {
   try {
     const users: User[] = await userModel.findAll()
     if (!users.length) {
@@ -48,7 +67,7 @@ export const getAllUsers = async (req: Request, res: Response): Promise<void> =>
 }
 
 //get user by its id
-export const getUserById = async (req: Request, res: Response): Promise<void> => {
+export const getUserById = [authenticate, async (req: Request, res: Response): Promise<void> => {
   try {
     const userId = req.params.user_id
     if (!userId) {
@@ -68,7 +87,7 @@ export const getUserById = async (req: Request, res: Response): Promise<void> =>
 
 //update user
 
-export const UpdateUser = async (req: Request, res: Response): Promise<void> => {
+export const UpdateUser = [authenticate, async (req: Request, res: Response): Promise<void> => {
   try {
     const user: User = {
       user_id: req.params.user_id as string,
@@ -96,7 +115,7 @@ export const UpdateUser = async (req: Request, res: Response): Promise<void> => 
   }
 }
 
-export const deleteUser = async (req: Request, res: Response): Promise<void> => {
+export const deleteUser = [authenticate, async (req: Request, res: Response): Promise<void> => {
   try {
     const user_Id = req.params.user_id as string
     if (!user_Id) {
